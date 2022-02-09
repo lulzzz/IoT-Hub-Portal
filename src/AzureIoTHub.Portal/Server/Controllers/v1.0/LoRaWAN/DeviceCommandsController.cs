@@ -1,23 +1,23 @@
 ﻿// Copyright (c) CGI France. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace AzureIoTHub.Portal.Server.Controllers.V10
+namespace AzureIoTHub.Portal.Server.Controllers.V10.LoRaWAN
 {
     using System.Threading.Tasks;
     using Azure;
     using Azure.Data.Tables;
     using AzureIoTHub.Portal.Server.Factories;
     using AzureIoTHub.Portal.Server.Mappers;
-    using AzureIoTHub.Portal.Shared.Models.V10;
+    using AzureIoTHub.Portal.Shared.Models.V10.LoRaWAN.LoRaDeviceModel;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/models/{id}/commands")]
-    [ApiExplorerSettings(GroupName = "Device Models")]
-    public class DeviceModelCommandsController : ControllerBase
+    [Route("api/lorawan/models/{id}/commands")]
+    [ApiExplorerSettings(GroupName = "LoRa WAN")]
+    public class DeviceCommandsController : ControllerBase
     {
         /// <summary>
         /// The table client factory.
@@ -32,16 +32,16 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<DeviceModelCommandsController> log;
+        private readonly ILogger<DeviceCommandsController> log;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeviceModelCommandsController"/> class.
+        /// Initializes a new instance of the <see cref="DeviceCommandsController"/> class.
         /// </summary>
         /// <param name="log">The logger.</param>
         /// <param name="deviceModelCommandMapper">The device model command mapper.</param>
         /// <param name="tableClientFactory">The table client factory.</param>
-        public DeviceModelCommandsController(
-            ILogger<DeviceModelCommandsController> log,
+        public DeviceCommandsController(
+            ILogger<DeviceCommandsController> log,
             IDeviceModelCommandMapper deviceModelCommandMapper,
             ITableClientFactory tableClientFactory)
         {
@@ -65,7 +65,7 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
             {
                 var query = this.tableClientFactory
                             .GetDeviceTemplates()
-                            .GetEntity<TableEntity>(DeviceModelsController.DefaultPartitionKey, id);
+                            .GetEntity<TableEntity>(LoRaWANDeviceModelsController.DefaultPartitionKey, id);
 
                 TableEntity entity = new TableEntity()
                 {
@@ -109,7 +109,7 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
             {
                 var query = this.tableClientFactory
                             .GetDeviceTemplates()
-                            .GetEntity<TableEntity>(DeviceModelsController.DefaultPartitionKey, modelId);
+                            .GetEntity<TableEntity>(LoRaWANDeviceModelsController.DefaultPartitionKey, modelId);
 
                 var result = await this.tableClientFactory.GetDeviceCommands()
                                                 .DeleteEntityAsync(modelId, commandId);

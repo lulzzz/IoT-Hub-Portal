@@ -8,6 +8,8 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using AzureIoTHub.Portal.Shared.Models.V10.LoRaWAN.LoRaDevice;
+using AzureIoTHub.Portal.Server.Helpers;
 
 namespace AzureIoTHub.Portal.Server.Tests.Mappers
 {
@@ -130,7 +132,6 @@ namespace AzureIoTHub.Portal.Server.Tests.Mappers
             Assert.IsFalse(result.IsConnected);
             Assert.IsFalse(result.IsEnabled);
 
-            Assert.AreEqual(twin.Tags[nameof(DeviceDetails.LocationCode).ToCamelCase()].ToString(), result.LocationCode);
             Assert.AreEqual(DateTime.MinValue, result.StatusUpdatedTime);
 
             this.mockRepository.VerifyAll();
@@ -153,10 +154,10 @@ namespace AzureIoTHub.Portal.Server.Tests.Mappers
                 SensorDecoder = Guid.NewGuid().ToString()
             };
 
-            Helpers.DeviceHelper.SetTagValue(twin, nameof(item.LocationCode), item.LocationCode);
-            Helpers.DeviceHelper.SetTagValue(twin, nameof(item.AssetId), item.AssetId);
-            Helpers.DeviceHelper.SetTagValue(twin, nameof(item.DeviceType), item.DeviceType);
-            Helpers.DeviceHelper.SetTagValue(twin, nameof(item.ModelId), item.ModelId);
+            DeviceHelper.SetTagValue(twin, nameof(item.LocationCode), item.LocationCode);
+            DeviceHelper.SetTagValue(twin, nameof(item.AssetId), item.AssetId);
+            DeviceHelper.SetTagValue(twin, nameof(item.DeviceType), item.DeviceType);
+            DeviceHelper.SetTagValue(twin, nameof(item.ModelId), item.ModelId);
 
             // Update the twin properties
             twin.Properties.Desired[nameof(item.AppEUI)] = item.AppEUI;

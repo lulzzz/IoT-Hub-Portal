@@ -1,9 +1,9 @@
 ﻿using Azure;
 using Azure.Data.Tables;
-using AzureIoTHub.Portal.Server.Controllers.V10;
+using AzureIoTHub.Portal.Server.Controllers.V10.LoRaWAN;
 using AzureIoTHub.Portal.Server.Factories;
 using AzureIoTHub.Portal.Server.Mappers;
-using AzureIoTHub.Portal.Shared.Models.V10;
+using AzureIoTHub.Portal.Shared.Models.V10.LoRaWAN.LoRaDeviceModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,23 +25,23 @@ namespace AzureIoTHub.Portal.Server.Tests.Controllers.V10
         private Mock<ITableClientFactory> mockTableClientFactory;
         private Mock<TableClient> mockDeviceTemplatesTableClient;
         private Mock<TableClient> mockCommandsTableClient;
-        private Mock<ILogger<DeviceModelCommandsController>> mockLogger;
+        private Mock<ILogger<DeviceCommandsController>> mockLogger;
 
         [SetUp]
         public void SetUp()
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockLogger = this.mockRepository.Create<ILogger<DeviceModelCommandsController>>();
+            this.mockLogger = this.mockRepository.Create<ILogger<DeviceCommandsController>>();
             this.mockDeviceModelCommandMapper = this.mockRepository.Create<IDeviceModelCommandMapper>();
             this.mockTableClientFactory = this.mockRepository.Create<ITableClientFactory>();
             this.mockDeviceTemplatesTableClient = this.mockRepository.Create<TableClient>();
             this.mockCommandsTableClient = this.mockRepository.Create<TableClient>();
         }
 
-        private DeviceModelCommandsController CreateDeviceModelCommandsController()
+        private DeviceCommandsController CreateDeviceModelCommandsController()
         {
-            return new DeviceModelCommandsController(
+            return new DeviceCommandsController(
                 this.mockLogger.Object,
                 this.mockDeviceModelCommandMapper.Object,
                 this.mockTableClientFactory.Object);
@@ -82,7 +82,7 @@ namespace AzureIoTHub.Portal.Server.Tests.Controllers.V10
 
             this.mockTableClientFactory.Verify(c => c.GetDeviceTemplates(), Times.Once());
             this.mockDeviceTemplatesTableClient.Verify(c => c.GetEntity<TableEntity>(
-                        It.Is<string>(p => p == DeviceModelsController.DefaultPartitionKey),
+                        It.Is<string>(p => p == LoRaWANDeviceModelsController.DefaultPartitionKey),
                         It.Is<string>(k => k == entity.RowKey),
                         It.IsAny<IEnumerable<string>>(),
                         It.IsAny<CancellationToken>()), Times.Once);
@@ -141,7 +141,7 @@ namespace AzureIoTHub.Portal.Server.Tests.Controllers.V10
 
             this.mockTableClientFactory.Verify(c => c.GetDeviceTemplates(), Times.Once());
             this.mockDeviceTemplatesTableClient.Verify(c => c.GetEntity<TableEntity>(
-                        It.Is<string>(p => p == DeviceModelsController.DefaultPartitionKey),
+                        It.Is<string>(p => p == LoRaWANDeviceModelsController.DefaultPartitionKey),
                         It.Is<string>(k => k == entity.RowKey),
                         It.IsAny<IEnumerable<string>>(),
                         It.IsAny<CancellationToken>()), Times.Once);
@@ -175,13 +175,13 @@ namespace AzureIoTHub.Portal.Server.Tests.Controllers.V10
         {
             var mockResponse = this.mockRepository.Create<Response<TableEntity>>();
             var modelId = Guid.NewGuid().ToString();
-            var entity = new TableEntity(DeviceModelsController.DefaultPartitionKey, modelId);
+            var entity = new TableEntity(LoRaWANDeviceModelsController.DefaultPartitionKey, modelId);
 
             mockResponse.Setup(c => c.Value)
                 .Returns(entity);
 
             this.mockDeviceTemplatesTableClient.Setup(c => c.GetEntity<TableEntity>(
-                        It.Is<string>(p => p == DeviceModelsController.DefaultPartitionKey),
+                        It.Is<string>(p => p == LoRaWANDeviceModelsController.DefaultPartitionKey),
                         It.Is<string>(k => k == modelId),
                         It.IsAny<IEnumerable<string>>(),
                         It.IsAny<CancellationToken>()))
@@ -196,7 +196,7 @@ namespace AzureIoTHub.Portal.Server.Tests.Controllers.V10
         private void SetupNotFoundDeviceModel()
         {
             this.mockDeviceTemplatesTableClient.Setup(c => c.GetEntity<TableEntity>(
-                    It.Is<string>(p => p == DeviceModelsController.DefaultPartitionKey),
+                    It.Is<string>(p => p == LoRaWANDeviceModelsController.DefaultPartitionKey),
                     It.IsAny<string>(),
                     It.IsAny<IEnumerable<string>>(),
                     It.IsAny<CancellationToken>()))

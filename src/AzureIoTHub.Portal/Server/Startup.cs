@@ -4,10 +4,8 @@
 namespace AzureIoTHub.Portal.Server
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Net;
-    using System.Reflection;
     using System.Threading.Tasks;
     using Azure.Storage.Blobs;
     using AzureIoTHub.Portal.Server.Factories;
@@ -15,6 +13,8 @@ namespace AzureIoTHub.Portal.Server
     using AzureIoTHub.Portal.Server.Managers;
     using AzureIoTHub.Portal.Server.Mappers;
     using AzureIoTHub.Portal.Server.Services;
+    using AzureIoTHub.Portal.Shared.Models.V10.DeviceModel;
+    using AzureIoTHub.Portal.Shared.Models.V10.LoRaWAN.LoRaDeviceModel;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -99,10 +99,12 @@ namespace AzureIoTHub.Portal.Server
             services.AddTransient<IDeviceTwinMapper, DeviceTwinMapper>();
             services.AddTransient<IConcentratorTwinMapper, ConcentratorTwinMapper>();
             services.AddTransient<IDeviceModelCommandMapper, DeviceModelCommandMapper>();
-            services.AddTransient<IDeviceModelMapper, DeviceModelMapper>();
             services.AddTransient<IConnectionStringManager, ConnectionStringManager>();
             services.AddTransient<IDeviceModelCommandsManager, DeviceModelCommandsManager>();
             services.AddTransient<IDeviceProvisioningServiceManager, DeviceProvisioningServiceManager>();
+
+            services.AddTransient<IDeviceModelMapper<DeviceModel>, DeviceModelMapper>();
+            services.AddTransient<IDeviceModelMapper<LoRaDeviceModel>, LoRaDeviceModelMapper>();
 
             services.AddTransient<ConfigsServices>();
 

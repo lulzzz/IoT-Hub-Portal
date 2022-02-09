@@ -6,10 +6,10 @@ namespace AzureIoTHub.Portal.Server.Mappers
     using Azure.Data.Tables;
     using AzureIoTHub.Portal.Shared.Models.V10.LoRaWAN.LoRaDeviceModel;
 
-    public interface IDeviceModelCommandMapper
+    public interface ILoRaDeviceModelMapper
     {
-        public DeviceModelCommand GetDeviceModelCommand(TableEntity entity);
+        LoRaDeviceModel CreateLoRaDeviceModel(TableEntity entity);
 
-        public void UpdateTableEntity(TableEntity commandEntity, DeviceModelCommand element);
+        void UpdateTableEntity(TableEntity entity, LoRaDeviceModel model);
     }
 }

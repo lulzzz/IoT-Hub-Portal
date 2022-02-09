@@ -1,5 +1,6 @@
 ﻿@page "/devices"
 @using AzureIoTHub.Portal.Shared.Models.V10.Device
+@using AzureIoTHub.Portal.Shared.Models.V10.DeviceModel
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
@@ -19,7 +20,7 @@
                         <MudTextField @bind-Value="searchID" Placeholder="DeviceID"></MudTextField>
                     </MudItem>
                     <MudItem xs="12" md="6">
-                        <MudTextField @bind-Value="searchLocation" Placeholder="Location"></MudTextField>
+                        @*<MudTextField @bind-Value="searchName" Placeholder="Name"></MudTextField>*@
                     </MudItem>
                     <MudItem sm="12" md="6">
                         <MudText>Status</MudText>
@@ -151,10 +152,7 @@
     private string searchID = "";
     private string searchStatus = "";
     private string searchState = "";
-    private string searchLocation = "";
-    private string searchAppEUI = "";
-    private string searchAppKey = "";
-
+    // private string searchName = "";
 
     private int[] pageSizeOptions = new int[] { 2, 5, 10 };
 
@@ -193,9 +191,7 @@
         searchID = "";
         searchStatus = "";
         searchState = "";
-        searchLocation = "";
-        searchAppEUI = "";
-        searchAppKey = "";
+        // searchName = "";
     }
 
     /// <summary>
@@ -228,12 +224,10 @@
         bool flagID = checkFlag(item.DeviceID, searchID);
         bool flagStatus = checkFlag(item.IsEnabled.ToString(), searchStatus);
         bool flagState = checkFlag(item.IsConnected.ToString(), searchState);
-        bool flagLocation = checkFlag(item.LocationCode, searchLocation);
-        bool flagAppEUI = checkFlag(item.AppEUI, searchAppEUI);
-        bool flagAppKey = checkFlag(item.AppKey, searchAppKey);
+        // bool flagLocation = checkFlag(item.Name, searchName);
 
         // Current row is shown only if all the flags are true
-        if (flagID && flagStatus && flagState && flagLocation && flagAppEUI && flagAppKey)
+        if (flagID && flagStatus && flagState)
             return true;
 
         return false;

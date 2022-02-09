@@ -1,15 +1,16 @@
 ﻿// Copyright (c) CGI France. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace AzureIoTHub.Portal.Server.Mappers
+namespace AzureIoTHub.Portal.Server.Managers
 {
     using Azure.Data.Tables;
-    using AzureIoTHub.Portal.Shared.Models.V10;
+    using AzureIoTHub.Portal.Shared.Models.V10.DeviceModel;
 
-    public interface IDeviceModelMapper
+    public interface IDeviceModelMapper<TModel>
+        where TModel : DeviceModel
     {
-        DeviceModel CreateDeviceModel(TableEntity entity);
+        public TModel CreateDeviceModel(TableEntity entity);
 
-        void UpdateTableEntity(TableEntity entity, DeviceModel model);
+        public void UpdateTableEntity(TableEntity entity, TModel model);
     }
 }

@@ -13,7 +13,7 @@ using NUnit.Framework;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AzureIoTHub.Portal.Server.Tests.Controllers
+namespace AzureIoTHub.Portal.Server.Tests.Controllers.V10
 {
     [TestFixture]
     public class DevicesControllerTests
