@@ -78,6 +78,7 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateDeviceAsync(DeviceDetails device)
         {
             try
@@ -119,6 +120,7 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
         /// <param name="device">the device object.</param>
         /// <returns>the update twin.</returns>
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateDeviceAsync(DeviceDetails device)
         {
             if (!this.ModelState.IsValid)

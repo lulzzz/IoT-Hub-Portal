@@ -11,6 +11,7 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
     using AzureIoTHub.Portal.Server.Mappers;
     using AzureIoTHub.Portal.Server.Services;
     using AzureIoTHub.Portal.Shared.Models.V10.Concentrator;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Azure.Devices;
     using Microsoft.Azure.Devices.Common.Exceptions;
@@ -40,6 +41,10 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
             this.routerConfigManager = routerConfigManager;
         }
 
+        /// <summary>
+        /// Gets a list of devices as DeviceConcentrator from Azure IoT Hub.
+        /// </summary>
+        /// <returns>A list of DeviceConcentrator.</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllDeviceConcentrator()
         {
@@ -51,6 +56,11 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
             return this.Ok(result);
         }
 
+        /// <summary>
+        /// Retrieve a specific device and from the IoT Hub.
+        /// </summary>
+        /// <param name="deviceId">ID of the device to retrieve.</param>
+        /// <returns>The DeviceConcentrator corresponding to the given ID.</returns>
         [HttpGet("{deviceId}")]
         public async Task<IActionResult> GetDeviceConcentrator(string deviceId)
         {
@@ -59,6 +69,7 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateDeviceAsync(Concentrator device)
         {
             try
@@ -97,6 +108,7 @@ namespace AzureIoTHub.Portal.Server.Controllers.V10
         }
 
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateDeviceAsync(Concentrator device)
         {
             if (!this.ModelState.IsValid)
